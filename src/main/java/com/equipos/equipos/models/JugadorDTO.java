@@ -14,6 +14,7 @@ public class JugadorDTO {
     private String nombre;
     private String apellido;
     private String posicion;
-    private String equipoNombre; //va a buscar el nombre a la clase equipo
+    private String equipoNombre;        //va a buscar el nombre a la clase equipo
+    private Integer equipoFundacion;
 
 }

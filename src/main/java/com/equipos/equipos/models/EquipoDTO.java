@@ -13,6 +13,7 @@ import java.util.List;
 public class EquipoDTO {
 
     private String nombre;
+    private Integer fundacion;
     private List<JugadorDTO> jugadores;
 
 }

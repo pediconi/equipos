@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +19,7 @@ import java.util.Optional;
 public class JugadorController {
 
     private final String EQUIPO_NOT_FOUND = "Equipo no encontrado";
+    private final String JUGADOR_NOT_FOUND = "Jugador con id: %s no existe";
     private ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
@@ -34,9 +34,9 @@ public class JugadorController {
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST, String.format(EQUIPO_NOT_FOUND,id_equipo)));
 
         j.setEquipo(e);   // como en el json cuando cargo un jugador no pongo su equipo(x el json ignore de la clase jugador), lo tengo q setear aca
-        e.getJugadores().add(j);     // a ese equipo le añado un jugador a su lista y guardo
+        e.getJugadores().add(j);     // a ese equipo le añado el jugador a su lista y guardo
 
-        jugadorRepository.save(j);   // agrego una persona a la lista
+        jugadorRepository.save(j);
         equipoRepository.save(e);
     }
 
@@ -53,7 +53,7 @@ public class JugadorController {
     @GetMapping("/{id}")
     public JugadorDTO getJugadorById(@PathVariable Integer id){
         Optional<Jugador> j = jugadorRepository.findById(id);
-        return j.map(jugador -> modelMapper.map(jugador, JugadorDTO.class)).orElse(null);
+        return j.map(jugador -> modelMapper.map(jugador, JugadorDTO.class)).orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST, String.format(JUGADOR_NOT_FOUND,id))); // aca lanzar excepcion en el else
     }
 
     /* ES LO MISMO QUE LO DE ARRIBA:
@@ -71,4 +71,5 @@ public class JugadorController {
     public void deleteById(@PathVariable Integer id){
         jugadorRepository.deleteById(id);
     }
+
 }
