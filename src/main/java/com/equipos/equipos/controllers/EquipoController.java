@@ -67,6 +67,15 @@ public class EquipoController {
         return eDTO;
     }
 
+    @PutMapping("/{id}")
+    public void updateById(@RequestBody Equipo e, @PathVariable Integer id){
+        Equipo buscado = equipoRepository.getOne(id);
+
+        buscado.setFundacion(e.getFundacion());
+        buscado.setNombre(e.getNombre());
+        equipoRepository.saveAndFlush(buscado);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Integer id){
         equipoRepository.deleteById(id);

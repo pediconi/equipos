@@ -67,6 +67,17 @@ public class JugadorController {
         return null;
     }*/
 
+    @PutMapping("/{id}")
+    public void updateById(@RequestBody Jugador j, @PathVariable Integer id){
+        Jugador buscado = jugadorRepository.getOne(id);
+
+        buscado.setNumero(j.getNumero());
+        buscado.setApellido(j.getApellido());
+        buscado.setNombre(j.getNombre());
+        buscado.setPosicion(j.getPosicion());
+        jugadorRepository.saveAndFlush(buscado);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Integer id){
         jugadorRepository.deleteById(id);
